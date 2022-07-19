@@ -35,12 +35,12 @@ public class UserController {
     }
 
     @PutMapping
-    public void update(@RequestBody User user) {
+    public void updateUser(@RequestBody User user) {
         this.userService.updateUser(user);
     }
 
     @GetMapping("/delete/{id}")
-    public void delete(@PathVariable int id) {
+    public void deleteUser(@PathVariable int id) {
         this.userService.deleteUser(id);
     }
 }
