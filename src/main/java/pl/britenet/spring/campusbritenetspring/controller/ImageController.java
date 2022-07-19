@@ -37,7 +37,7 @@ public class ImageController {
 //        this.Service.update(t);
 //    }
 //
-//    @GetMapping("/delete/{id}")
+//    @DeleteMapping("/delete/{id}")
 //    public void delete(@PathVariable int id) {
 //        this.Service.delete(id);
 //    }

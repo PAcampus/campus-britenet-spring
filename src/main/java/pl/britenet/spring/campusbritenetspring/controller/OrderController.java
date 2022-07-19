@@ -39,7 +39,7 @@ public class OrderController {
         this.orderService.updateOrder(order);
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteOrder(@PathVariable int id) {
         this.orderService.deleteOrder(id);
     }
