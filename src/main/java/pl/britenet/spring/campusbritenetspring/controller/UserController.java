@@ -2,7 +2,6 @@ package pl.britenet.spring.campusbritenetspring.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pl.britenet.campus.models.Product;
 import pl.britenet.campus.models.User;
 import pl.britenet.campus.services.UserService;
 
