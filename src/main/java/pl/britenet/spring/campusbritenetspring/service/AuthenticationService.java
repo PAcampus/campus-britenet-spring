@@ -24,8 +24,9 @@ public class AuthenticationService {
         this.userService = userService;
     }
 
-    public UserLoginData login(UserCredentials userCredentials) {
-        Optional<User> oUser = this.userService.getUser(userCredentials.getEmail(), userCredentials.getPassword());
+    public UserLoginData login(UserCredentials userCredentials) throws NoSuchAlgorithmException {
+        //W 29 pewnie będzie trzeba przekazać zaszyfrowane hasło
+        Optional<User> oUser = this.userService.getUser(userCredentials.getEmail(), encryptPassword(userCredentials.getPassword()));
         if (oUser.isPresent()) {
             int userId = oUser.get().getId();
             String userToken = UUID.randomUUID().toString();
@@ -41,10 +42,9 @@ public class AuthenticationService {
         return this.activeTokens.containsKey(userToken);
     }
 
-    public void register(User user) throws NoSuchAlgorithmException, NoSuchProviderException {
-        String salt = getSalt();
+    public void register(User user) throws NoSuchAlgorithmException {
 
-        String encryptedPassword = get_SHA_256_SecurePassword(user.getPassword(), salt);
+        String encryptedPassword = encryptPassword(user.getPassword());
 
         User insertedUser = new User();
         insertedUser.setEmail(user.getEmail());
@@ -53,43 +53,32 @@ public class AuthenticationService {
         insertedUser.setLast_name(user.getLast_name());
         insertedUser.setAddress(user.getAddress());
         insertedUser.setPhone_number(user.getPhone_number());
-
-        System.out.println(insertedUser.toString());
         this.userService.insertUser(insertedUser);
     }
 
-    private static String get_SHA_256_SecurePassword(String passwordToHash,
-                                                     String salt) {
+    public String encryptPassword(String passwordToEncrypt) throws NoSuchAlgorithmException {
         String generatedPassword = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(salt.getBytes());
-            byte[] bytes = md.digest(passwordToHash.getBytes());
+        try
+        {
+            // Create MessageDigest instance for MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+
+            // Add password bytes to digest
+            md.update(passwordToEncrypt.getBytes());
+
+            // Get the hash's bytes
+            byte[] bytes = md.digest();
+
+            // This bytes[] has bytes in decimal format. Convert it to hexadecimal format
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < bytes.length; i++) {
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16)
-                        .substring(1));
+            for (byte aByte : bytes) {
+                sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
             }
+            // Get complete hashed password in hex format
             generatedPassword = sb.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         return generatedPassword;
-    }
-
-    private static String getSalt()
-            throws NoSuchAlgorithmException, NoSuchProviderException
-    {
-        // Always use a SecureRandom generator
-        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG", "SUN");
-
-        // Create array for salt
-        byte[] salt = new byte[16];
-
-        // Get a random salt
-        sr.nextBytes(salt);
-
-        // return salt
-        return Arrays.toString(salt);
     }
 }

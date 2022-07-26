@@ -1,10 +1,7 @@
 package pl.britenet.spring.campusbritenetspring.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.britenet.campus.models.User;
 import pl.britenet.spring.campusbritenetspring.model.UserCredentials;
 import pl.britenet.spring.campusbritenetspring.model.UserLoginData;
@@ -13,8 +10,9 @@ import pl.britenet.spring.campusbritenetspring.service.AuthenticationService;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
+@CrossOrigin
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/authentication")
 public class LoginController {
     private final AuthenticationService authenticationService;
 
@@ -23,8 +21,8 @@ public class LoginController {
         this.authenticationService = authenticationService;
     }
 
-    @PostMapping
-    public UserLoginData logInUser(@RequestBody UserCredentials userCredentials) {
+    @PostMapping("/login")
+    public UserLoginData logInUser(@RequestBody UserCredentials userCredentials) throws NoSuchAlgorithmException {
         return this.authenticationService.login(userCredentials);
     }
 
@@ -34,7 +32,7 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public void registerUser(@RequestBody User user) throws NoSuchAlgorithmException, NoSuchProviderException {
+    public void registerUser(@RequestBody User user) throws NoSuchAlgorithmException{
         this.authenticationService.register(user);
     }
 }

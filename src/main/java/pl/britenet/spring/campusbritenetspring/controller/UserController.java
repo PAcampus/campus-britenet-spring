@@ -8,6 +8,7 @@ import pl.britenet.campus.services.UserService;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
