@@ -1,17 +1,17 @@
 package pl.britenet.spring.campusbritenetspring.model;
 
 import pl.britenet.campus.models.Cart;
-import pl.britenet.campus.models.CartProduct;
+import pl.britenet.campus.models.OrderProduct;
 
 import java.util.List;
 
 public class CartWithProducts {
     private Cart cart;
-    private List<CartProduct> cartProducts;
+    private List<OrderProduct> orderProducts;
 
-    public CartWithProducts(Cart cart, List<CartProduct> cartProducts) {
+    public CartWithProducts(Cart cart, List<OrderProduct> orderProducts) {
         this.cart = cart;
-        this.cartProducts = cartProducts;
+        this.orderProducts = orderProducts;
     }
 
     public Cart getCart() {
@@ -22,11 +22,11 @@ public class CartWithProducts {
         this.cart = cart;
     }
 
-    public List<CartProduct> getCartProducts() {
-        return cartProducts;
+    public List<OrderProduct> getOrderProducts() {
+        return orderProducts;
     }
 
-    public void setCartProducts(List<CartProduct> cartProducts) {
-        this.cartProducts = cartProducts;
+    public void setOrderProducts(List<OrderProduct> orderProducts) {
+        this.orderProducts = orderProducts;
     }
 }

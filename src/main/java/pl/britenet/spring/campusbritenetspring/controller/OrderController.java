@@ -32,12 +32,6 @@ public class OrderController {
         return this.orderService.getOrders();
     }
 
-    @GetMapping("/orderId")
-    public int GetOrderId() {
-        List<Order> orderList = this.orderService.getOrders();
-        return orderList.get(orderList.size() - 1).getId();
-    }
-
     @PostMapping
     public void createOrder(@RequestBody Order order, @RequestHeader("Authorization") String userToken) {
         int user_id = authenticationService.getUserId(userToken);
