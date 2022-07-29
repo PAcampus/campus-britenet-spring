@@ -11,6 +11,7 @@ import pl.britenet.campus.services.OrderService;
 import pl.britenet.spring.campusbritenetspring.model.CartWithProducts;
 import pl.britenet.spring.campusbritenetspring.service.AuthenticationService;
 
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin
@@ -33,26 +34,15 @@ public class CartWithProductsController {
 
     @PostMapping
     public void buyCart(@RequestBody CartWithProducts cartWithProducts, @RequestHeader("Authorization") String user_token) {
-        System.out.println("Token: " + user_token);
-        int user_id =authenticationService.getUserId(user_token);
-        System.out.println("Id Usera: " + user_id);
-        Cart cart = cartWithProducts.getCart();
-        cart.setUserId(user_id);
-        List<OrderProduct> orderProducts = cartWithProducts.getOrderProducts();
+        int userId =authenticationService.getUserId(user_token);
+        var cart = cartWithProducts.getCart();
+        cart.setUserId(userId);
 
-        System.out.println(cart.toString());
-        System.out.println("PRODUKTY:");
-        orderProducts.forEach(orderProduct -> System.out.println(orderProduct.getId() + " " +
-                orderProduct.getOrderId()+ " " +  orderProduct.getProductId()));
-    }
-
-    public int getNewOrderId() {
-        List<Order> orderList = this.orderService.getOrders();
-        return orderList.get(orderList.size() - 1).getId();
-    }
-
-    public int getNewCartId() {
-        List<Cart> cartList = this.cartService.getCarts();
-        return cartList.get(cartList.size() - 1).getId();
+        this.cartService.insertCart(cart);
+        int cartId = this.cartService.getNewCartId();
+        var order = new Order(-1, cartId, userId, new Date());
+        this.orderService.insertOrder(order);
+        int orderId = this.orderService.getNewOrderId();
+        this.orderProductService.insertOrderProducts(cartWithProducts.getOrderProducts(), orderId);
     }
 }
