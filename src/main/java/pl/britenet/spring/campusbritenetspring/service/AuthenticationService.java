@@ -9,8 +9,6 @@ import pl.britenet.spring.campusbritenetspring.model.UserLoginData;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.SecureRandom;
 import java.util.*;
 
 @Service
@@ -25,7 +23,6 @@ public class AuthenticationService {
     }
 
     public UserLoginData login(UserCredentials userCredentials) throws NoSuchAlgorithmException {
-        //W 29 pewnie będzie trzeba przekazać zaszyfrowane hasło
         Optional<User> oUser = this.userService.getUser(userCredentials.getEmail(), encryptPassword(userCredentials.getPassword()));
         if (oUser.isPresent()) {
             int userId = oUser.get().getId();
@@ -40,6 +37,10 @@ public class AuthenticationService {
 
     public boolean isLogged(String userToken) {
         return this.activeTokens.containsKey(userToken);
+    }
+
+    public int getUserId(String token) {
+        return this.activeTokens.get(token);
     }
 
     public void register(User user) throws NoSuchAlgorithmException {

@@ -34,6 +34,13 @@ public class OrderProductController {
         this.orderProductService.insertOrderProduct(orderProduct);
     }
 
+    @PostMapping("/all")
+    public void createOrderProducts(@RequestBody List<OrderProduct> orderProductList) {
+        for (OrderProduct orderProduct : orderProductList) {
+            this.orderProductService.insertOrderProduct(orderProduct);
+        }
+    }
+
     @PutMapping
     public void updateOrderProduct(@RequestBody OrderProduct orderProduct) {
         this.orderProductService.updateOrderProduct(orderProduct);
