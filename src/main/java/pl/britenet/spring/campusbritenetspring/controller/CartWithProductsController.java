@@ -2,9 +2,7 @@ package pl.britenet.spring.campusbritenetspring.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pl.britenet.campus.models.Cart;
 import pl.britenet.campus.models.Order;
-import pl.britenet.campus.models.OrderProduct;
 import pl.britenet.campus.services.CartService;
 import pl.britenet.campus.services.OrderProductService;
 import pl.britenet.campus.services.OrderService;
@@ -12,7 +10,6 @@ import pl.britenet.spring.campusbritenetspring.model.CartWithProducts;
 import pl.britenet.spring.campusbritenetspring.service.AuthenticationService;
 
 import java.util.Date;
-import java.util.List;
 
 @CrossOrigin
 @RestController

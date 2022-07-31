@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.britenet.campus.models.OrderProduct;
 import pl.britenet.campus.services.OrderProductService;
+import pl.britenet.spring.campusbritenetspring.service.AuthenticationService;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,15 +14,23 @@ import java.util.Optional;
 @RequestMapping("/api/v1/orderproduct")
 public class OrderProductController {
     private final OrderProductService orderProductService;
+    private final AuthenticationService authenticationService;
 
     @Autowired
-    public OrderProductController(OrderProductService orderProductService) {
+    public OrderProductController(OrderProductService orderProductService, AuthenticationService authenticationService) {
         this.orderProductService = orderProductService;
+        this.authenticationService = authenticationService;
     }
 
     @GetMapping("/{id}")
     public Optional<OrderProduct> getOrderProduct(@PathVariable int id) {
         return this.orderProductService.getOrderProduct(id);
+    }
+
+    @GetMapping("/user")
+    public List<OrderProduct> getOrderProductsOfUser(@RequestHeader("Authorization") String userToken) {
+        int userId = authenticationService.getUserId(userToken);
+        return this.orderProductService.getOrderProductsOfUser(userId);
     }
 
     @GetMapping
