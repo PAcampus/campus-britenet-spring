@@ -8,10 +8,12 @@ import java.util.List;
 public class CartWithProducts {
     private Cart cart;
     private List<OrderProduct> orderProducts;
+    private String address;
 
-    public CartWithProducts(Cart cart, List<OrderProduct> orderProducts) {
+    public CartWithProducts(Cart cart, List<OrderProduct> orderProducts, String address) {
         this.cart = cart;
         this.orderProducts = orderProducts;
+        this.address = address;
     }
 
     public Cart getCart() {
@@ -28,5 +30,13 @@ public class CartWithProducts {
 
     public void setOrderProducts(List<OrderProduct> orderProducts) {
         this.orderProducts = orderProducts;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
